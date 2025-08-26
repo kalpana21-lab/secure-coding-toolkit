@@ -1,0 +1,38 @@
+.quiz-card {
+  background-color: #f9f9f9;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  padding: 16px;
+  margin-bottom: 12px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.05);
+  transition: transform 0.2s ease;
+}
+
+.quiz-card:hover {
+  transform: scale(1.02);
+}
+
+.quiz-title {
+  font-size: 1.2rem;
+  font-weight: bold;
+  margin-bottom: 8px;
+}
+
+.quiz-score {
+  font-size: 1rem;
+  color: #333;
+}
+
+.quiz-date {
+  font-size: 0.9rem;
+  color: #777;
+}
+.high-score {
+  border-left: 5px solid green;
+}
+.medium-score {
+  border-left: 5px solid orange;
+}
+.low-score {
+  border-left: 5px solid red;
+}
