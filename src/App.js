@@ -1,4 +1,5 @@
 //C:\Users\KALPNA\Desktop\secure-coding2\frontend\src\App.js
+// Triggering final Netlify deploy to activate _redirects
 import React, { useState } from 'react';
 import { Navigate } from 'react-router-dom';
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
