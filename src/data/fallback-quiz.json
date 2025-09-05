@@ -1,0 +1,52 @@
+[
+  {
+    "question": "Which of the following is a common web vulnerability?",
+    "options": [
+      "SQL Injection",
+      "CSS Styling Error",
+      "Slow Network",
+      "Missing Alt Text"
+    ],
+    "answer": "SQL Injection"
+  },
+  {
+    "question": "What does input validation help prevent?",
+    "options": [
+      "User interface glitches",
+      "Unauthorized database access",
+      "Slow page loads",
+      "Broken links"
+    ],
+    "answer": "Unauthorized database access"
+  },
+  {
+    "question": "Which method is safest for storing passwords?",
+    "options": [
+      "Plain text",
+      "Base64 encoding",
+      "MD5 hashing",
+      "Bcrypt hashing"
+    ],
+    "answer": "Bcrypt hashing"
+  },
+  {
+    "question": "What is the purpose of using JWT in secure coding?",
+    "options": [
+      "To style the frontend",
+      "To manage user sessions securely",
+      "To store images",
+      "To connect to MongoDB"
+    ],
+    "answer": "To manage user sessions securely"
+  },
+  {
+    "question": "Which HTTP header helps prevent XSS attacks?",
+    "options": [
+      "Content-Type",
+      "Authorization",
+      "X-Frame-Options",
+      "Content-Security-Policy"
+    ],
+    "answer": "Content-Security-Policy"
+  }
+]

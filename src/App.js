@@ -18,6 +18,7 @@ import { ToastContainer } from 'react-toastify';
 import QuizEditor from './components/QuizEditor';
 import AdminQuizManager from './pages/AdminQuizManager';
 import PreviewLearner from './pages/PreviewLearner';
+import './style/global.css';
 
 function App() {
   const [secureText, setSecureText] = useState('');

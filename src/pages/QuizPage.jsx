@@ -1,6 +1,5 @@
-// frontend/src/pages/QuizPage.jsx
 import React, { useEffect, useState } from 'react';
-import { fetchLessons as fetchQuizzes, submitQuizAnswers as submitQuiz } from '../services/api';
+import { fetchQuiz } from '../utils/fetchQuiz';
 
 function QuizPage() {
   const [quizzes, setQuizzes] = useState([]);
@@ -9,12 +8,8 @@ function QuizPage() {
 
   useEffect(() => {
     const loadQuizzes = async () => {
-      try {
-        const data = await fetchQuizzes();
-        setQuizzes(data);
-      } catch (err) {
-        console.error('Failed to fetch quizzes:', err);
-      }
+      const data = await fetchQuiz();
+      setQuizzes(data);
     };
     loadQuizzes();
   }, []);
@@ -26,56 +21,80 @@ function QuizPage() {
     }));
   };
 
-  const handleSubmit = async (quiz) => {
-    try {
-      const res = await submitQuiz(quiz._id, answers);
-      alert(`Score: ${res.score}/${quiz.questions.length}`);
-      setResult(res);
-    } catch (err) {
-      console.error('Submission error:', err);
-      alert('Failed to submit quiz. Please try again.');
-    }
+  const handleSubmit = (quiz) => {
+    let score = 0;
+    const feedbackData = quiz.questions.map(q => {
+      const correct = q.correctAnswer;
+      const userAnswer = answers[q._id];
+      if (userAnswer === correct) {
+        score++;
+        return { question: q.prompt, result: "✅ Correct" };
+      } else {
+        return { question: q.prompt, result: `❌ Incorrect (Correct: ${correct})` };
+      }
+    });
+
+    setResult({ score, feedback: feedbackData });
+  };
+
+  const handleRetake = () => {
+    setAnswers({});
+    setResult(null);
   };
 
   return (
-    <div style={{ maxWidth: '800px', margin: '0 auto' }}>
-      <h2>Secure Coding Quiz</h2>
+    <div>
+      <header style={{ textAlign: 'center', padding: '1rem', backgroundColor: '#f5f5f5' }}>
+        <h1>🔐 Secure Coding Dashboard</h1>
+        <p style={{ fontSize: '0.9rem', color: '#555' }}>Practice. Learn. Secure.</p>
+      </header>
 
-      {quizzes.map(quiz => (
-        <div key={quiz._id} style={{ marginBottom: '2rem' }}>
-          <h3>{quiz.title}</h3>
+      <div style={{ maxWidth: '800px', margin: '0 auto', paddingBottom: '2rem' }}>
+        <h2>Secure Coding Quiz</h2>
 
-          {quiz.questions.map(q => (
-            <div key={q._id} style={{ marginBottom: '1rem' }}>
-              <p><strong>{q.prompt}</strong></p>
-              {q.options.map(opt => (
-                <label key={opt} style={{ display: 'block', marginLeft: '1rem' }}>
-                  <input
-                    type="radio"
-                    name={q._id}
-                    value={opt}
-                    checked={answers[q._id] === opt}
-                    onChange={() => handleChange(q._id, opt)} />
-                  {opt}
-                </label>
-              ))}
-            </div>
-          ))}
+        {quizzes.map(quiz => (
+          <div key={quiz._id} style={{ marginBottom: '2rem' }}>
+            <h3>{quiz.title}</h3>
 
-          <button onClick={() => handleSubmit(quiz)}>Submit</button>
-        </div>
-      ))}
+            {quiz.questions.map(q => (
+              <div key={q._id} style={{ marginBottom: '1rem' }}>
+                <p><strong>{q.prompt}</strong></p>
+                {q.options.map(opt => (
+                  <label key={opt} style={{ display: 'block', marginLeft: '1rem' }}>
+                    <input
+                      type="radio"
+                      name={q._id}
+                      value={opt}
+                      checked={answers[q._id] === opt}
+                      onChange={() => handleChange(q._id, opt)}
+                    />
+                    {opt}
+                  </label>
+                ))}
+              </div>
+            ))}
 
-      {result && (
-        <div style={{ marginTop: '2rem' }}>
-          <h4>Score: {result.score}</h4>
-         {result.feedback?.map((fb, idx) => (
-          <p key={idx}>
-          <strong>{fb.question}</strong>: {fb.result}
-          </p>
-          ))}
-        </div>
-      )}
+            <h4>Progress: {quiz.questions.filter(q => answers[q._id]).length} / {quiz.questions.length}</h4>
+            <button onClick={() => handleSubmit(quiz)}>Submit</button>
+          </div>
+        ))}
+
+        {result && (
+          <div style={{ marginTop: '2rem' }}>
+            <h4>Score: {result.score}</h4>
+            {result.feedback.map((fb, idx) => (
+              <p key={idx}>
+                <strong>{fb.question}</strong>: {fb.result}
+              </p>
+            ))}
+            <button onClick={handleRetake}>Retake Quiz</button>
+          </div>
+        )}
+      </div>
+
+      <footer style={{ textAlign: 'center', marginTop: '3rem', fontSize: '0.85rem', color: '#777' }}>
+        <p>Built by Kalpana Panchal • Arya P.G. College, Panipat</p>
+      </footer>
     </div>
   );
 }

@@ -1,7 +1,10 @@
+//C:\Users\KALPNA\Desktop\secure-coding-dashboard\frontend-clean\src\components\LoginForm.jsx
 import React, { useState } from 'react';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom'; 
 
 const LoginForm = () => {
+  const navigate = useNavigate(); 
   const [formData, setFormData] = useState({
     email: '',
     password: ''
@@ -13,18 +16,24 @@ const LoginForm = () => {
     setFormData({ ...formData, [e.target.name]: e.target.value });
   };
 
+  const [loading, setLoading] = useState(false);
+
   const login = async (e) => {
     e.preventDefault();
+    setLoading(true);
     try {
-      const { data } = await axios.post('http://localhost:5000/api/users/login', formData);
-      console.log('Login successful:', data);
+      const { data } = await axios.post('/auth/login',formData);
       localStorage.setItem('token', data.token);
       setMessage(`Welcome back, ${data.name}!`);
+       navigate('/dashboard');
     } catch (error) {
-      console.error('Login error:', error.response?.data || error.message);
       setMessage(error.response?.data?.error || 'Login failed');
+    } finally {
+      setLoading(false);
     }
   };
+
+
 
   return (
     <form onSubmit={login}>
@@ -45,7 +54,9 @@ const LoginForm = () => {
         onChange={handleChange}
         required
       />
-      <button type="submit">Log In</button>
+      <button type="submit" disabled={loading}>
+        {loading ? 'Logging in...' : 'Log In'}
+      </button>
       {message && <p>{message}</p>}
     </form>
   );

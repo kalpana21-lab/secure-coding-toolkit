@@ -1,13 +1,14 @@
-// src/pages/Login.js
+//C:\Users\KALPNA\Desktop\secure-coding-dashboard\frontend-clean\src\pages\Login.js
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import SecureInput from '../components/SecureInput';
 import api from '../services/api';
+import '../style/global.css'; // ✅ Import your CSS
 
 const Login = () => {
   const [email, setEmail] = useState('');
   const [password, setPassword] = useState('');
-  const navigate = useNavigate(); // ✅ Moved inside component
+  const navigate = useNavigate();
 
   const handleLogin = async () => {
     if (!email || !password) {
@@ -18,11 +19,9 @@ const Login = () => {
     try {
       const res = await api.post('/auth/login', { email, password });
       const token = res.data.token;
-
-      localStorage.setItem('token', token); // ✅ Store JWT securely
+      localStorage.setItem('token', token);
       alert('Login successful!');
-      navigate('/dashboard'); // ✅ Single redirect
-
+      navigate('/dashboard');
     } catch (err) {
       console.error('Login error:', err.response?.data || err.message);
       alert('Login failed. Check your credentials and try again.');
@@ -30,10 +29,10 @@ const Login = () => {
   };
 
   return (
-    <div style={{ maxWidth: '400px', margin: '0 auto' }}>
+    <div className="login-container">
       <h2>Login</h2>
 
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="form-group">
         <label htmlFor="email">Email</label>
         <SecureInput
           id="email"
@@ -43,7 +42,7 @@ const Login = () => {
         />
       </div>
 
-      <div style={{ marginBottom: '1rem' }}>
+      <div className="form-group">
         <label htmlFor="password">Password</label>
         <SecureInput
           id="password"
